@@ -1,0 +1,17 @@
+[build]
+  command = "npm run build"
+  functions = "netlify/functions"
+  publish = "dist"
+
+[functions]
+  external_node_modules = ["@supabase/supabase-js", "nodemailer", "formidable"]
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+  [build.environment]
+  SUPABASE_URL = "https://yopjmebjepvxkofbbnqz.supabase.co"
+  SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlvcGptZWJqZXB2eGtvZmJibnF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY0MTY3MTksImV4cCI6MjA3MTk5MjcxOX0.wRfNAypamiZulLyKlRVUP3qlUz_EqQBy5ksLirHSorMy"
+  SUPABASE_SERVICE_ROLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlvcGptZWJqZXB2eGtvZmJibnF6Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NjQxNjcxOSwiZXhwIjoyMDcxOTkyNzE5fQ.ocQeUXazjbgGd8Sh0cLKT8bqxFkX-7FCRnhB6MxkU_8"
