@@ -164,39 +164,39 @@ exports.handler = async (event, context) => {
 
     // Send email via Resend
     let resendAttachments = [];
-    if (cvBuffer && cvFilename) {
-      resendAttachments.push({
-        filename: cvFilename,
-        content: cvBuffer,
-      });
-    }
+if (cvBuffer && cvFilename) {
+  resendAttachments.push({
+    filename: cvFilename,
+    content: cvBuffer.toString('base64'), // base64 encoding required
+  });
+}
 
-    try {
-      await resend.emails.send({
-        from: 'mail.hellorory.dev',
-        to: 'rorisangpetja07@gmail.com',
-        subject: `New Job Application: ${job.title}`,
-        html: `
-          <h2>New Job Application Received</h2>
-          <p><strong>Position:</strong> ${job.title}</p>
-          <p><strong>Applicant:</strong> ${fullName}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Phone:</strong> ${phone}</p>
-          <p><strong>Cover Letter:</strong></p>
-          <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 10px 0;">
-            ${coverLetter.replace(/\n/g, '<br>')}
-          </div>
-          ${cvUrl ? `<p><strong>CV:</strong> <a href="${cvUrl}">View CV</a></p>` : '<p>No CV uploaded</p>'}
-        `,
-        attachments: resendAttachments.length > 0 ? resendAttachments : undefined,
-      });
-    } catch (emailError) {
-      return {
-        statusCode: 500,
-        headers,
-        body: JSON.stringify({ error: `Email send error: ${emailError.message}` }),
-      };
-    }
+try {
+  await resend.emails.send({
+    from: 'Job Applications <job-applications@mail.hellorory.dev>', // must be a verified sender in Resend
+    to: 'rorisangpetja07@gmail.com',
+    subject: `New Job Application: ${job.title}`,
+    html: `
+      <h2>New Job Application Received</h2>
+      <p><strong>Position:</strong> ${job.title}</p>
+      <p><strong>Applicant:</strong> ${fullName}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Phone:</strong> ${phone}</p>
+      <p><strong>Cover Letter:</strong></p>
+      <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 10px 0;">
+        ${coverLetter.replace(/\n/g, '<br>')}
+      </div>
+      ${cvUrl ? `<p><strong>CV:</strong> <a href="${cvUrl}">View CV</a></p>` : '<p>No CV uploaded</p>'}
+    `,
+    attachments: resendAttachments.length > 0 ? resendAttachments : undefined,
+  });
+} catch (emailError) {
+  return {
+    statusCode: 500,
+    headers,
+    body: JSON.stringify({ error: `Email send error: ${emailError.message}` }),
+  };
+}
 
     return {
       statusCode: 200,
