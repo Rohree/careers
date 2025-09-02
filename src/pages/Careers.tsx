@@ -5,7 +5,7 @@ import ApplyModal from '../components/ApplyModal';
 import { Job } from '../lib/supabase';
 import logo from '../assets/logo.png';
 import hero from '../assets/hero-career.png';
-import Testimonials from '../components/testimonials';
+import Testimonials from '../components/Testimonials';
 import Footer from '../components/Footer';
 
 const Careers: React.FC = () => {
