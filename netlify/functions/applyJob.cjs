@@ -119,24 +119,40 @@ exports.handler = async (event, context) => {
     }
 
     // Upload CV if present
-    let cvUrl = null;
-    if (files.cv && files.cv.buffer) {
-      const fileName = `${Date.now()}-${files.cv.filename || 'cv.pdf'}`;
-      const { error: uploadError } = await supabase.storage
-        .from('job-cvs')
-        .upload(fileName, files.cv.buffer, {
-          contentType: files.cv.mimetype,
-        });
-      if (uploadError) {
-        return {
-          statusCode: 500,
-          headers,
-          body: JSON.stringify({ error: `CV upload error: ${uploadError.message}` }),
-        };
-      }
-      const { data: urlData } = supabase.storage.from('cvs').getPublicUrl(fileName);
-      cvUrl = urlData.publicUrl;
-    }
+let cvUrl = null;
+if (files.cv && files.cv.buffer) {
+  const fileName = `${Date.now()}-${files.cv.filename || 'cv.pdf'}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from('job-cvs')
+    .upload(fileName, files.cv.buffer, {
+      contentType: files.cv.mimetype,
+      upsert: false, // optional, prevents overwriting
+    });
+
+  if (uploadError) {
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({ error: `CV upload error: ${uploadError.message}` }),
+    };
+  }
+
+  // Generate signed URL (1 hour expiry)
+  const { data: signedData, error: signedError } = await supabase.storage
+    .from('job-cvs')
+    .createSignedUrl(fileName, 60 * 60);
+
+  if (signedError) {
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({ error: `Signed URL error: ${signedError.message}` }),
+    };
+  }
+
+  cvUrl = signedData.signedUrl;
+}
 
     // Save application to database
     const { data: application, error: dbError } = await supabase
