@@ -173,7 +173,7 @@ exports.handler = async (event, context) => {
 
     try {
       await resend.emails.send({
-        from: 'no-reply@dunamispower.co.za',
+        from: 'mail.hellorory.dev',
         to: 'rorisangpetja07@gmail.com',
         subject: `New Job Application: ${job.title}`,
         html: `
