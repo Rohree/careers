@@ -123,7 +123,7 @@ exports.handler = async (event, context) => {
     if (files.cv && files.cv.buffer) {
       const fileName = `${Date.now()}-${files.cv.filename || 'cv.pdf'}`;
       const { error: uploadError } = await supabase.storage
-        .from('cvs')
+        .from('job-cvs')
         .upload(fileName, files.cv.buffer, {
           contentType: files.cv.mimetype,
         });
