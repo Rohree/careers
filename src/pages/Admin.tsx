@@ -6,7 +6,13 @@ import { Job } from '../lib/supabase';
 import logo from "../assets/logo.png"
 
 const Admin: React.FC = () => {
-  const [user, setUser] = useState<unknown | null>(null);
+  interface SupabaseUser {
+    email?: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [key: string]: any;
+  }
+  
+  const [user, setUser] = useState<SupabaseUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

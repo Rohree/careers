@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import { X, Upload, FileText } from 'lucide-react';
 import { Job } from '../lib/supabase';
@@ -89,6 +90,15 @@ const ApplyModal: React.FC<ApplyModalProps> = ({ job, onClose }) => {
           >
             <X className="h-6 w-6 text-slate-500" />
           </button>
+        </div>
+
+        {/* Job Image & Description */}
+        <div className="p-6 border-b border-slate-100">
+          {job.image_url && (
+            <img src={job.image_url} alt={job.title} className="w-full h-48 object-cover rounded-lg mb-4" />
+          )}
+          <p className="text-slate-700 whitespace-pre-line mb-2"><strong>Description:</strong></p>
+          <p className="text-slate-700 whitespace-pre-line mb-2">{job.description}</p>
         </div>
 
         {/* Form */}

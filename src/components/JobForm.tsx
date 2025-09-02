@@ -59,6 +59,7 @@ const JobForm: React.FC<JobFormProps> = ({ onClose, onJobAdded }) => {
       } else {
         throw new Error('Failed to add job');
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       setSubmitMessage('Error adding job. Please try again.');
     } finally {

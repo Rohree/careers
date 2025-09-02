@@ -8,6 +8,9 @@ interface JobCardProps {
 }
 
 const JobCard: React.FC<JobCardProps> = ({ job, onApply }) => {
+  const [showFullDesc, setShowFullDesc] = React.useState(false);
+  const isLong = job.description.length > 200;
+
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-all duration-200 hover:border-blue-200">
       <div className="space-y-4">
@@ -22,9 +25,24 @@ const JobCard: React.FC<JobCardProps> = ({ job, onApply }) => {
             <MapPin className="h-4 w-4 mr-1" />
             <span>{job.location}</span>
           </div>
+          <div className="text-xs text-slate-500 mt-1">
+            Posted: {new Date(job.created_at).toLocaleDateString()}
+          </div>
         </div>
 
-        <p className="text-slate-700 leading-relaxed line-clamp-3">{job.description}</p>
+        <div>
+          <p className={`text-slate-700 leading-relaxed ${!showFullDesc ? 'line-clamp-3' : ''}`}>
+            {showFullDesc || !isLong ? job.description : job.description.slice(0, 200) + '...'}
+          </p>
+          {isLong && (
+            <button
+              className="text-blue-600 hover:underline mt-2 text-sm"
+              onClick={() => setShowFullDesc((v) => !v)}
+            >
+              {showFullDesc ? 'Show less' : 'Read more'}
+            </button>
+          )}
+        </div>
 
         <div className="pt-4 border-t border-slate-100">
           <button

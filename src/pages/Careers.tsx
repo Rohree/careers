@@ -5,6 +5,8 @@ import ApplyModal from '../components/ApplyModal';
 import { Job } from '../lib/supabase';
 import logo from '../assets/logo.png';
 import hero from '../assets/hero-career.png';
+import Testimonials from '../components/testimonials';
+import Footer from '../components/Footer';
 
 const Careers: React.FC = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -107,6 +109,11 @@ const Careers: React.FC = () => {
           </>
         )}
       </main>
+      <section>
+        <Testimonials />
+        <Footer />
+      </section>
+    
 
       {/* Apply Modal */}
       {isModalOpen && selectedJob && (
